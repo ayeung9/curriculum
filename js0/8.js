@@ -9,6 +9,8 @@
 
 const solution = (num1, num2) => {
   return () => {
+    const sum = num1+num2
+    return sum
   }
 }
 
