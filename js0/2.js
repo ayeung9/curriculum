@@ -8,8 +8,7 @@
  */
 
 const solution = (num1, num2, num3) => {
-  const sum = num1+num2+num3;
-  return sum
+  return num1+num2+num3;
 }
 
 module.exports = {
