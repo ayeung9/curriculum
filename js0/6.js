@@ -9,7 +9,10 @@
  */
 
 const solution = (num1, num2) => {
-  return true
+  if (num1>num2){
+    return true
+  }
+  return false
 }
 
 module.exports = {
