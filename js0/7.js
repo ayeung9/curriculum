@@ -8,7 +8,11 @@
  */
 
 const solution = (num1, num2) => {
-  return true
+  const sum=num1+num2
+  if (sum>10){
+    return true
+  }
+  return false
 }
 
 module.exports = {
