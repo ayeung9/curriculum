@@ -8,7 +8,8 @@
  */
 
 const solution = (func1, func2) => {
-  return 0
+  let sum = func1()+func2()
+  return sum
 }
 
 module.exports = {
