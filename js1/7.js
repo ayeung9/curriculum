@@ -9,7 +9,13 @@
  */
 
 const solution = (inp, letter, i = 0) => {
-  return true
+  if (i<inp.length){
+    if (inp[i] == letter){
+      return true
+    }
+    return solution (inp, letter, i+1)
+  }
+  return false   
 }
 
 module.exports = {
