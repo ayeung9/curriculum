@@ -18,7 +18,18 @@
  */
 
 const solution = (str, fun) => {
-  return () => { }
+  let counter = 0
+  return () => {
+    if (counter+1 <= str.length){
+      fun(str[counter])
+      counter = counter+1
+    }
+    else{
+      counter = 0
+      fun(str[counter])
+      counter = counter+1
+    }
+   }
 }
 
 module.exports = {
