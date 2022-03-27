@@ -20,16 +20,12 @@
 const solution = (str, fun) => {
   let counter = 0
   return () => {
-    if (counter+1 <= str.length){
-      fun(str[counter])
-      counter = counter+1
-    }
-    else{
+    if (counter >= str.length){
       counter = 0
-      fun(str[counter])
-      counter = counter+1
     }
-   }
+    fun(str[counter])
+    counter += 1
+  }
 }
 
 module.exports = {
