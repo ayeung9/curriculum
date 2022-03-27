@@ -9,11 +9,11 @@
  */
 
 const solution = (str, fun, result = '', i = 0) => {
-  if (i<str.length){
-    result = result+fun(str[i])
-    return solution(str, fun, result, i+1)
+  if (i>=str.length){
+    return result
   }
-  return result
+  result = result+fun(str[i])
+  return solution(str, fun, result, i+1)
 }
 
 module.exports = {
