@@ -10,8 +10,20 @@
  * @returns {array}
  */
 
-const solution = (row, col) => {
-  return []
+const solution = (row, col, copiedArray = [], result = [], i = 0) => {
+  const arrayCopier = (col, arrayToBeCopied = [], i = 0) => {
+    if (i === col){
+       return arrayToBeCopied
+     }
+    arrayToBeCopied[i] = 0
+    return arrayCopier (col, arrayToBeCopied, i+1)
+  }
+  if (i === row){
+    return result
+  }
+  copiedArray = arrayCopier(col)
+  result[i] = copiedArray
+  return solution (row, col, copiedArray, result, i+1)
 }
 
 module.exports = {
