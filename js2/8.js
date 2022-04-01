@@ -5,8 +5,13 @@
  */
 
 const solution = () => {
-  Array.prototype.cMap = function (cb) {
-    return 0
+  Array.prototype.cMap = function (cb, count = 0, array = []) {
+    if (count >= this.length){
+      return array
+    }
+    cb(this[count], count, this)
+    array[count] = this[count]+count+1
+    return this.cMap(cb, count+1, array)
   }
 }
 
