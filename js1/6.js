@@ -8,7 +8,19 @@
  */
 
 const solution = (num, i = 2) => {
-  return true
+  if (num<2){
+    return false
+  }
+  if (num != 2 && num % 2 == 0){
+    return false
+  }
+  if (num != 3 && num % 3 == 0){
+    return false
+  }
+  if (num %i == 0){
+    return true
+  }
+  return solution (num, i+1)
 }
 
 module.exports = {
