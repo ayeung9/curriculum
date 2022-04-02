@@ -9,8 +9,7 @@ const solution = () => {
     if (count >= this.length){
       return array
     }
-    cb(this[count], count, this)
-    array[count] = this[count]+count+1
+    array[count] = cb(this[count], count, this)
     return this.cMap(cb, count+1, array)
   }
 }
