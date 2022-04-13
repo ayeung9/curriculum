@@ -5,7 +5,13 @@
  */
 
 const solution = () => {
-  Array.prototype.cFind = function (cb) {
+  Array.prototype.cFind = function (cb, count = 0, find) {
+    if (count >= this.length){
+      return undefined
+    }
+    if(cb(this[count], count, this) === true)
+      return find = this[count]
+    return this.cFind(cb, count+1, find)
   }
 }
 
