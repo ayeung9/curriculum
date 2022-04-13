@@ -9,9 +9,19 @@
  * @param {number} col
  * @returns {array}
  */
-
-const solution = (row, col) => {
-  return []
+ const arrayCopier = (amountOfColumns, arrayToBeCopied = [], i = 0) => {
+  if (i >= amountOfColumns){
+     return arrayToBeCopied
+   }
+  arrayToBeCopied[i] = 0
+  return arrayCopier (amountOfColumns, arrayToBeCopied, i+1)
+}
+const solution = (row, col, result = [], i = 0) => {
+  if (i >= row){
+    return result
+  }
+  result[i] = arrayCopier(col)
+  return solution (row, col, result, i+1)
 }
 
 module.exports = {
