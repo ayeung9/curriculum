@@ -12,8 +12,24 @@
  * @return {array} arr
  */
 
-const solution = (num1, num2) => {
-  return []
+const objectCopier = (columns, counter, array = [], i = 0) => {
+  let newObject = {}
+  if (i >= columns){
+    return array
+  }
+  newObject['x'] = i
+  newObject['y'] = counter
+  array.push(newObject)
+  return objectCopier(columns, counter, array, i+1)
+}
+
+const solution = (rows, columns, i = 0, finalArray = [], counter = 0) => {
+  if (i >= rows){
+    return finalArray
+  }
+  let object = (objectCopier(columns, counter))
+  finalArray.push(object)
+  return solution(rows, columns, i+1, finalArray, counter+1)
 }
 
 module.exports = {
