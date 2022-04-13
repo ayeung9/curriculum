@@ -5,8 +5,13 @@
  */
 
 const solution = () => {
-  Array.prototype.cFilter = function () {
-    return 0
+  Array.prototype.cFilter = function (cb, count = 0, array = []) {
+    if (count >= this.length){
+      return array
+    }
+    if(cb(this[count], count, this) === true)
+      array.push(this[count])
+    return this.cFilter(cb, count+1, array)
   }
 }
 
