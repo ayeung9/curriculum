@@ -5,8 +5,16 @@
  */
 
 const solution = () => {
-  Array.prototype.cReduce = function () {
-    return 0
+  Array.prototype.cReduce = function (cb, acc, i = 0) {
+    if (acc === undefined){
+      acc = this[0]
+      return this.cReduce(cb, acc, i+1)
+    }
+    if (i >= this.length){
+          return acc
+      }
+    acc = cb(acc, this[i], i, this)
+    return this.cReduce(cb, acc, i+1)
   }
 }
 
