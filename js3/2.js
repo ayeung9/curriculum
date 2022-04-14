@@ -13,13 +13,11 @@
  */
 
 const objectCopier = (columns, counter, array = [], i = 0) => {
-  let newObject = {}
+  const newObject = {}
   if (i >= columns){
     return array
   }
-  newObject['x'] = i
-  newObject['y'] = counter
-  array.push(newObject)
+  array.push({'x': i, 'y': counter})
   return objectCopier(columns, counter, array, i+1)
 }
 
@@ -27,7 +25,7 @@ const solution = (rows, columns, i = 0, finalArray = [], counter = 0) => {
   if (i >= rows){
     return finalArray
   }
-  let object = (objectCopier(columns, counter))
+  const object = (objectCopier(columns, counter))
   finalArray.push(object)
   return solution(rows, columns, i+1, finalArray, counter+1)
 }
