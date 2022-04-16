@@ -5,21 +5,15 @@
 */
 
 const solution = (arr) => {
-  const numberOfElements = arr.reduce((acc, e) => {
+  let result = []
+  arr.reduce((acc, e) => {
     acc[e] = (acc[e] || 0) + 1
+    if(acc[e] === 2){
+      result.push(e)
+    }
     return acc
   },{})
-  
-  const duplicates = (array, i = 0, result = []) => {
-    if (i >= array.length){
-      return result
-    }
-    if (array[i][1] > 1){
-      result.push(parseInt(array[i][0]))
-    }
-    return duplicates(array, i+1, result)
-	}
-  return duplicates(Object.entries(numberOfElements))
+  return result
 }
 
 module.exports = {
