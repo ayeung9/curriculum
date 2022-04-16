@@ -5,12 +5,10 @@
 */
 
 const solution = () => {
-  Object.prototype.map = function (cb, key = Object.keys(this), value = Object.values(this), i = 0, result = [] ) {
-    if (i >= key.length){
-      return result
-    }
-    result.push(cb(key[i], value[i], i))
-    return this.map (cb, key, value, i+1, result)
+  Object.prototype.map = function (cb) {
+    return Object.entries(this).map(([key, value], i) => {
+      return cb(key, value, i)
+    })
   }
 }
 
