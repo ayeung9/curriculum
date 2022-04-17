@@ -1,9 +1,15 @@
-<div>
-<button class="previous">Previous</button>
-<button class="next">Next</button>
-</div>
-<div class="display">
-</div>
+<html>
+  <head>
+    <title>Pokemon</title>
+  </head>
+  <body>
+    <div>
+      <button class="previous">Previous</button>
+      <button class="next">Next</button>
+    </div>
+    <div class="display"></div>
+  </body>
+</html>
 <script>
     const nextButton = document.querySelector('.next')
     const previousButton = document.querySelector('.previous')
@@ -12,10 +18,9 @@
     let previousPage = null
 
     const render = (url) => {
+        pokemonDisplay.innerHTML = 'Loading...Pokemon sprites coming soon...'
         fetch(url)
-        .then(response => {
-            return response.json()
-        })
+        .then(r => r.json())
         .then(data => {
             previousButton.onclick = () => {
             	render(data.previous)
@@ -25,21 +30,15 @@
             }
             const fetchPromises = data.results.map(pokemon => {
             	return fetch(pokemon.url)
-              .then(details => {
-              	return details.json()
-              })
+              .then(r => r.json())
             })
             return Promise.all(fetchPromises)
         })
         .then(list => {
-        	return list.reduce((acc, e) => {
-          return acc = `${acc}<h1>${e.name}</h1><img src=${e.sprites.front_shiny}/>`
+        	pokemonDisplay.innerHTML = list.reduce((acc, e) => {
+          return acc = `${acc}<h1>${e.name}</h1><img src="${e.sprites.front_shiny}"/>`
           },'')
         })
-        .then(html => {
-        	pokemonDisplay.innerHTML = html
-        })
     }
-    
     render('https://pokeapi.co/api/v2/pokemon')
 </script>
