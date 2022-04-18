@@ -22,12 +22,8 @@
         fetch(url)
         .then(r => r.json())
         .then(data => {
-            previousButton.onclick = () => {
-            	render(data.previous)
-            }
-            nextButton.onclick = () => {
-            	render(data.next)
-            }
+            nextPage = data.next
+            previousPage = data.previous
             const fetchPromises = data.results.map(pokemon => {
             	return fetch(pokemon.url)
               .then(r => r.json())
@@ -40,5 +36,16 @@
           },'')
         })
     }
-    render('https://pokeapi.co/api/v2/pokemon')
+render('https://pokeapi.co/api/v2/pokemon')
+
+previousButton.onclick = () => {
+	if (!previousPage) return
+  render(previousPage)
+}
+
+nextButton.onclick = () => {
+	if (!nextPage) return
+  render(nextPage)
+}
+
 </script>
