@@ -6,7 +6,13 @@
  **/
 
 const solution = (obj1, obj2) => {
-  return {}
+  return Object.keys(obj1).reduce((acc, e) => {
+    acc[e] = obj1[e]
+    if (obj2[e]){
+      acc[e] = obj2[e](obj1[e])
+    }
+    return acc
+  },{})
 }
 module.exports = {
   solution
