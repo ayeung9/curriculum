@@ -22,12 +22,12 @@
     }
 	
     .clockContent {
-      background-color: black;
+      background-color: white;
       position: absolute;
       top: 50%;
       height: 100%;
       width: 100%;
-	  text-align: center;
+	    text-align: center;
       cursor: pointer;
       transition: top 0.5s linear;
     }
@@ -65,19 +65,20 @@
     const dateObj = new Date();
     const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
     const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const contentsOfClock = document.querySelector('.clockContent');
 
     function render () {
-      let date = dateObj.getDate();
-      let year = dateObj.getFullYear();
-      let month = dateObj.getMonth();
-      let day = dateObj.getDay();
-      let hour = dateObj.getHours();
-      let minutes = dateObj.getMinutes();
+      const date = dateObj.getDate();
+      const year = dateObj.getFullYear();
+      const month = dateObj.getMonth();
+      const day = dateObj.getDay();
+      const hour = dateObj.getHours();
+      const minutes = dateObj.getMinutes();
 
-      minutes = (minutes < 10) ? `0${minutes}` : minutes;
+      let variableminutes = (minutes < 10) ? `0${minutes}` : minutes;
 
       const today = `${months[month]} ${date}, ${year}`;
-      const time = `${hour}:${minutes}`;
+      const time = `${hour}:${variableminutes}`;
 
       document.querySelector('.time').innerText = time;
       document.querySelector('.date').innerText = today;
@@ -85,11 +86,11 @@
     };
  
     function toggle () {
-        document.querySelector('.clockContent').classList.toggle('full')
+      contentsOfClock.classList.toggle('full')
     }
 	
 	render();
-    document.querySelector('.clockContent').addEventListener('click', toggle)
+  contentsOfClock.addEventListener('click', toggle)
   </script>
  </html>
  
