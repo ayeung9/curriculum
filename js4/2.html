@@ -1,0 +1,83 @@
+<html>
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.2.0/css/all.css">
+<style>
+    .fas{
+        font-size: 30px;
+        color: yellow;
+        -webkit-text-stroke-width: 3px;
+        -webkit-text-stroke-color: black;
+    }
+    .fa-star{
+        font-size: 30px;
+        cursor: pointer
+    }
+
+</style>
+<div class = "container"></div>
+<p>You <span id="tense">are giving</span> <span id="starCount">0</span> Stars!</p>
+<script>
+    let clicked = false
+    const container = document.querySelector('.container')
+    container.addEventListener('mouseenter', () => {
+        clicked = false
+    })
+
+    const emoHelpsMeCount = (targetNum, callback, count = 0, result = []) => {
+        if (count >= targetNum){
+            return result
+        }
+        result.push(callback(count))
+        return emoHelpsMeCount(targetNum, callback, count+1, result)
+    }
+
+    function Star(i) {
+        const element = document.createElement('i')
+        element.classList.add('fa-star')
+        element.classList.add('far')
+        container.append(element)
+
+        const render = () => {
+            stars.forEach((s, index) => {
+                    if (index <= i){
+                        s.select()
+                    }
+                    else{
+                        s.unselect()
+                    }
+                    tense.innerText = "are giving"
+                })
+        }
+
+        element.addEventListener('click', () => {
+            clicked = true
+            render()
+            tense.innerText = "have given"
+        })
+
+        element.addEventListener('mousemove', () => {
+            if(clicked === true){
+                return
+            }
+            else{
+                render()
+            }
+        })
+
+        this.select = () => {
+            element.classList.remove('far')
+            element.classList.add('fas')
+            starCount.innerText = i+1
+        }
+
+        this.unselect = () => {
+            element.classList.remove('fas')
+            element.classList.add('far')
+        }
+    }
+
+    const stars = emoHelpsMeCount(5, (i) => {
+        return new Star(i)
+    })
+    
+</script>
+</html>
