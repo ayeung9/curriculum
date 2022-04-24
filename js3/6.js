@@ -5,7 +5,15 @@
 */
 
 const solution = (arr) => {
-  return []
+  let result = []
+  arr.reduce((acc, e) => {
+    acc[e] = (acc[e] || 0) + 1
+    if(acc[e] === 2){
+      result.push(e)
+    }
+    return acc
+  },{})
+  return result
 }
 
 module.exports = {
