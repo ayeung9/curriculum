@@ -1,0 +1,105 @@
+<html>
+<style>
+    .box{
+        width: 50px;
+        height: 50px;
+        border: 1px black solid;
+        background-color: aliceblue;
+        box-sizing: border-box;
+        display: inline-block;
+        vertical-align: top;
+        margin-top: 2px;
+    }
+    .box.selected{
+        background-color: limegreen;
+    }
+</style>
+
+<div class="container"></div>
+
+<script>
+    const container = document.querySelector('.container')
+
+    const gameStatus = () => {
+        const comparison = lightsOut[0][0].isSelected()
+        const result = lightsOut.find( rows => {
+            const found = rows.find( box => {
+                return box.isSelected() !== comparison
+            })
+            return found !== undefined
+        })
+        if (result === undefined){
+            size = +prompt('You have won! Play again with a different size of grid? Enter 0 to stop playing.')
+            if (size === 0){
+                return
+            }
+            else{
+                beginLightsOut(size)
+            }
+        }
+    }
+
+    function Box(rows, columns) {
+        const element = document.createElement('div')
+        element.classList.add('box')
+        container.append(element)
+        
+        this.toggle = () => {
+            element.classList.toggle('selected')
+        }
+
+        this.selected = () => {
+            element.classList.add('selected')
+        }
+
+        this.isSelected = () => {
+            return element.classList.contains('selected')
+        }
+
+        this.toggleLights = () => {
+            this.toggle()
+            lightsOut[rows-1] && lightsOut[rows-1][columns].toggle()
+            lightsOut[rows+1] && lightsOut[rows+1][columns].toggle()
+            lightsOut[columns-1] && lightsOut[rows][columns-1].toggle()
+            lightsOut[columns+1] && lightsOut[rows][columns+1].toggle()
+        }
+
+        element.addEventListener('click', () => {
+            if(element.classList.contains('selected') === false){
+                return
+            }
+            this.toggleLights()
+            gameStatus()
+        })
+    }
+
+    const generate1DArray = (columns, rows, i = 0, result = []) => {
+        if (i >= columns){
+            return result
+        }
+        result.push(new Box(rows,i))
+        return generate1DArray(columns, rows, i+1, result)
+    }
+
+    const generate2DArray = (rows, i = 0, result = []) => {
+        if (i >= rows){
+            container.style.width = `${rows*50}px`
+            return result
+        }
+        result.push(generate1DArray(rows, i))
+        return generate2DArray(rows, i+1, result)
+    }
+
+    let lightsOut
+    const beginLightsOut = (num) => {
+        container.innerHTML = ''
+        lightsOut = generate2DArray(num)
+
+        const generateRandomX = Math.floor(Math.random()*num)
+        const generateRandomY = Math.floor(Math.random()*num)
+        lightsOut[generateRandomX][generateRandomY].selected()
+    }
+
+    beginLightsOut(2)
+</script>
+</html>
