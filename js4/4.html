@@ -1,4 +1,8 @@
+<!DOCTYPE html>
+
 <html>
+<header></header>
+<body>
 <style>
     .box{
         width: 50px;
@@ -19,6 +23,7 @@
 
 <script>
     const container = document.querySelector('.container')
+    let lightsOut
 
     const gameStatus = () => {
         const comparison = lightsOut[0][0].isSelected()
@@ -33,10 +38,8 @@
             if (size === 0){
                 return
             }
-            else{
-                beginLightsOut(size)
-            }
-        }
+            beginLightsOut(size)
+         }
     }
 
     function Box(rows, columns) {
@@ -90,7 +93,6 @@
         return generate2DArray(rows, i+1, result)
     }
 
-    let lightsOut
     const beginLightsOut = (num) => {
         container.innerHTML = ''
         lightsOut = generate2DArray(num)
@@ -102,4 +104,5 @@
 
     beginLightsOut(2)
 </script>
+</body>
 </html>
