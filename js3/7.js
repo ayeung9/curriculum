@@ -6,7 +6,9 @@
 
 const solution = () => {
   Object.prototype.map = function (cb) {
-    return []
+    return Object.entries(this).map(([key, value], i) => {
+      return cb(key, value, i)
+    })
   }
 }
 
