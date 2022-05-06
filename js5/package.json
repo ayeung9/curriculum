@@ -1,0 +1,22 @@
+{
+  "name": "memegen.freedomains.dev",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node memegen.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git@freedomains.dev:/home/myproxy/memegen.freedomains.dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.18.1",
+    "jimp": "^0.16.1"
+  }
+}
