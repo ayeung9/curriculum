@@ -74,7 +74,7 @@ app.use(async (req, res, next) => {
     }
 
     console.log('Cache not found, sending request...')
-    existingAddresses = await fetch('https://js5.c0d3.com/location/api/ip/{ipAddress}')
+    existingAddresses = await fetch(`https://js5.c0d3.com/location/api/ip/${ipAddress}`)
         .then(r => r.json())
     visitorStatsUpdate(existingAddresses)
     mapIPAddresses[ipAddress] = existingAddresses
