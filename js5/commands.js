@@ -3,19 +3,15 @@ import { exec } from 'child_process'
 
 const app = express()
 const port = process.env.PORT || 3000
-const acceptableCommands = ['cat', 'ls', 'pwd']
 app.use(express.static('./'))
 app.use(express.json())
 
 app.post('/api/commands', (req, res) => {
     let acceptableCommand = false
     const {command} = req.body
-    acceptableCommands.some(cmd => {
-        if (command.includes(cmd)) {
-            acceptableCommand = true
-            return
-        }
-    })
+    if(command === "cat" || command === "ls" || command === "pwd"){
+        acceptableCommand = true
+    }
     if (!acceptableCommand) {
         return res.json('You entered an unacceptable command! Refer to acceptable commands listed above.')
     }
