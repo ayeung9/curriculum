@@ -84,8 +84,10 @@
                     }
                 })
             })
-                let playAgain = +confirm('You lose. Play again?')
-                beginMinesweeper(10)
+                if(confirm('You lose. Play again?')){
+                    beginMinesweeper(10)
+                }
+                return
             }
             element.innerHTML = ''
             this.reveal()
@@ -177,8 +179,10 @@
             },0)
         },0)
         if(count === 90){
-            let playAgain = +confirm('You won. Play again?')
-            beginMinesweeper(10)
+            if(confirm('You won. Play again?')){
+                beginMinesweeper(10)
+            }
+            
         }
     }
 
