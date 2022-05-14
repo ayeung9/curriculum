@@ -53,11 +53,11 @@ const getLocationOfVisitor = (cityStr, latLong, groupCityStr) => {
             </div><hr />
             <script>
             function myMap() {
-                var mapProp = {
+                const mapProp = {
                     center:new google.maps.LatLng(${latLong[0]},${latLong[1]}),
                         zoom:11,
                 };
-                var map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
+                const map = new google.maps.Map(document.getElementById("googleMap"),mapProp);
                 ${markersOnMap}
             }
             </script>
@@ -65,7 +65,7 @@ const getLocationOfVisitor = (cityStr, latLong, groupCityStr) => {
 }
 
 app.use(async (req, res, next) => {
-    let ipAddress = req.get('x-forwarded-for') || req.socket.remoteAddress
+    const ipAddress = req.get('x-forwarded-for') || req.socket.remoteAddress
     let existingAddresses = mapIPAddresses[ipAddress]
     if (existingAddresses){
         visitorStatsUpdate(existingAddresses)
