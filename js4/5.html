@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<header>
+    <title>Kanban Board</title>
+</header>
+
+<body>
+<style>
+    .container{
+        display: flex;
+        text-align: center;
+        padding-left: 30px;
+    }
+    .kanbanboard{
+        width: 100%;
+        margin-right: 30px;
+    }
+    .kanbanboard h1{
+        margin-bottom: 0px;
+    }
+    .inputContainer{
+        display: flex;
+    }
+    .inputContainer textarea{
+        height: 100px;
+        width: 100%;
+    }
+    .inputContainer button{
+        height: 100px;
+    }
+    .listItem{
+        background-color: lightgrey;
+        text-align: left;
+        padding: 10px;
+        margin-bottom: 5px;
+        display: flex;
+    }
+    .listItem h3{
+        margin: 0px;
+        padding: 0 10px;
+        width: 100%;
+    }
+    .arrow{
+        cursor: pointer;
+    }
+    .undo{
+        width: 100px;
+        height: 100px;
+        position: fixed;
+        right: 0px;
+        bottom: 0px;
+    }
+</style>
+
+<div class="container"></div>
+<button class="undo">Undo</button>
+
+<script>
+    let kanbanboards
+    let dataStorage = JSON.parse(localStorage.getItem('alltheitems') || '[[],[],[],[]]')
+    const container = document.querySelector('.container')
+    const undo = document.querySelector('.undo')
+    const dataFromKanBanBoard = () => {
+        const data = kanbanboards.map(e => {
+            return e.getData()
+        })
+        localStorage.setItem('alltheitems', JSON.stringify(data))
+    }
+    const movementHistory = []
+    const titlesOfBoard = [
+        {name: 'To-Do', color: '#35235D'},
+        {name: 'Doing',color: '#CB2402'},
+        {name: 'Done', color: '#4C49A2'},
+        {name: 'Approved', color: '#A31A48'}
+    ]
+    const saveState = () => {
+        const stringsFromBoard = kanbanboards.map(e => {
+            return e.getData()
+        })
+        movementHistory.push({
+            data: JSON.stringify(stringsFromBoard)
+        })
+    }
+
+    undo.addEventListener('click', () => {
+        const timeMachine = movementHistory.pop()
+        if(!timeMachine){
+            return
+        }
+        dataStorage = JSON.parse(timeMachine.data)
+        render()
+    })
+    
+    function ListItem(container, boardTitle, string){
+        const element = document.createElement('div')
+        element.classList.add('listItem')
+        if(boardTitle === 0){
+            element.innerHTML = `
+                <div class="listItem">
+                <h3>${string}</h3>
+                <span class="right arrow"> &gt; </span></div>`
+        }
+        else if(boardTitle === 3){
+            element.innerHTML = `
+                <div class="listItem"><span class="left arrow"> &lt; </span>
+                <h3>${string}</h3></div>`
+        }
+        else{
+            element.innerHTML = `
+                <div class="listItem"><span class="left arrow"> &lt; </span>
+                <h3>${string}</h3>
+                <span class="right arrow"> &gt; </span></div>`
+        }
+        container.append(element)
+
+        element.querySelector('h3').addEventListener('click', () => {
+            if(confirm(`Are you sure you want to remove ${string}?`)){
+                saveState()
+                element.remove()
+                string = ''
+                dataFromKanBanBoard()
+            }
+        })
+
+        if(boardTitle !== 0){
+            element.querySelector('.left').addEventListener('click', () => {
+                saveState()
+                kanbanboards[boardTitle-1].addItemToList(string)
+                element.remove()
+                string = ''
+                dataFromKanBanBoard()
+            })
+        }
+
+        if(boardTitle !== 3){
+            element.querySelector('.right').addEventListener('click', () => {
+                saveState()
+                kanbanboards[boardTitle+1].addItemToList(string)
+                element.remove()
+                string = ''
+                dataFromKanBanBoard()
+            })
+        }
+
+        this.getString = () => {
+            return string
+        }
+
+        this.removeString = () => {
+            string = ''
+            element.remove()
+        }
+    }
+    
+    function KanBanBoard(i){
+        const data = dataStorage[i]
+        console.log(i, data)
+        const element = document.createElement('div')
+        element.classList.add('kanbanboard')
+        const titleOfBoard = titlesOfBoard[i]
+        element.innerHTML = 
+        `<h1 style="background-color: ${titleOfBoard.color}">${titleOfBoard.name}</h1>
+        <div class="listContainer"></div>
+        <div class="inputContainer">
+            <textarea></textarea>
+            <button>Submit</button>
+        </div>`
+        
+        const listContainer = element.querySelector('.listContainer')
+        const textarea = element.querySelector('textarea')
+        const button = element.querySelector('button')
+
+        button.addEventListener('click', () => {
+            const submission = textarea.value
+            if (!submission){
+                return
+            }
+            saveState()
+            this.addItemToList(submission)
+            dataFromKanBanBoard()
+            textarea.value = ''
+        })
+
+        const listArray = data.map(e => {
+            return new ListItem(listContainer, i, e)
+        })
+
+        this.addItemToList = (e) => {
+            listArray.push(new ListItem(listContainer, i, e))
+        }
+
+        this.removeItemFromList = (e) => {
+            const list = listArray.pop()
+            list.removeString()
+        }
+
+        this.getData = () => {
+            const stringsFromListArray = listArray.map(e => {
+                return e.getString()
+            })
+            return stringsFromListArray.filter(e => {
+                return e
+            })
+        }
+
+        container.append(element)
+    }
+
+    const render = () => {
+        container.innerHTML = ''
+        kanbanboards = [
+            new KanBanBoard(0),
+            new KanBanBoard(1),
+            new KanBanBoard(2),
+            new KanBanBoard(3)
+        ]
+    }
+
+    render()
+</script>
+</body>
+</html>
