@@ -13,7 +13,7 @@
         border: 1px blue;
         border-style: solid;
         box-sizing: border-box;
-        margin: 2.5px;
+        margin: 0 5px 5px 0;
         display: inline-block;
         user-select: none;
         -moz-user-select: none;
@@ -68,7 +68,7 @@
             if (rows > finish.y){
                 return this.unselect()
             }
-            return this.select()
+            this.select()
         }
     }
     
@@ -92,10 +92,18 @@
     const generateBox = generate2DArray(5)
 
     const rangeFinder = (pixel, i=0) => {
-        if ((i+1)*50 > pixel){
+        if (((i+1)*59) > pixel){
             return i
         }
         return rangeFinder(pixel, i+1)
+    }
+
+    const checkBoxes = (lower, higher) => {
+            generateBox.forEach(rows => {
+                rows.forEach( e => {
+                    e.status(lower, higher)
+                })
+            })
     }
 
     container.addEventListener('mousedown', (e) => {
@@ -124,13 +132,6 @@
 
         const higherTop = Math.max(e.clientY, Y_coordinate)
         const higherLeft = Math.max(e.clientX, X_coordinate)
-        const checkBoxes = (lower, higher) => {
-            generateBox.forEach(rows => {
-                rows.forEach( e => {
-                    e.status(lower, higher)
-                })
-            })
-        }
         checkBoxes({x: rangeFinder(left), y: rangeFinder(top)},{x: rangeFinder(higherLeft), y: rangeFinder(higherTop)})
     })
 
