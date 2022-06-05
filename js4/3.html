@@ -1,0 +1,53 @@
+<html>
+<style>
+    .container {
+        margin: auto;
+        width: 421px;
+        height: 168px;
+        cursor: none;
+    }
+    .scope {
+        position: fixed;
+        height: 200px;
+        width: 200px;
+        pointer-events: none;
+        overflow: hidden;
+        border-radius: 50%;
+        display: none;
+        background: url('https://c0d3.com/challenges/assets/fair/big.jpg');
+        background-repeat: no-repeat;
+        clip-path: circle(100px at center);
+    }
+
+</style>
+<div class ="container">
+    <div class = "smallImage">
+        <img class="small" src="https://www.c0d3.com/challenges/assets/fair/small.jpg">  
+    </div>
+
+    <div class = "scope">
+        <img class="scopeimage" src="https://www.c0d3.com/challenges/assets/fair/scope.png">
+    </div>
+</div>
+<script>
+    const small = document.querySelector('.small')
+    const scope = document.querySelector('.scope')
+
+    small.onmouseout = () => {
+        scope.style.display = 'none'
+    }
+
+    small.onmousemove = (event) => {
+        scope.style.display = 'block'
+
+        const x_ratio = 1263/421
+        const y_ratio = 503/168
+
+        scope.style.left = `${event.clientX-100}px`
+        scope.style.top = `${event.clientY-100}px`
+
+        scope.style.backgroundPositionX = `${-1*x_ratio*event.offsetX+100}px`
+        scope.style.backgroundPositionY = `${-1*y_ratio*event.offsetY+100}px`
+    }
+</script>
+</html>
