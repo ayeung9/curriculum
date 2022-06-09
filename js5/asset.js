@@ -16,7 +16,11 @@ const vaccumCleaner = () => {
         if(dataFiles[fileName].created <= Date.now() - deleteInterval){
             console.log(`Vaccum cleaner is sucking up ${fileName}`)
             delete dataFiles[fileName]
-            fs.unlink(`./api/files/${fileName}`, () => {})
+            fs.unlink(`./api/files/${fileName}`, (err) => {
+                if (err) {
+                    console.log("Unlink failed" ,err)
+                }
+            })
         }
     })
     setTimeout(() => {
@@ -49,7 +53,7 @@ app.post('/api/files', (req, res) => {
 
 fs.readdir('./api/files', (err, data) => {
     if (err) {
-        console.log("Error reading file. Please check fs.readdir.")
+        console.log("Error reading file. Please check fs.readdir as it is likely the /api/files does not exist and must be created.")
     }
     data.forEach(fileName => {
         fs.readFile(`./api/files/${fileName}`, (err, content) => {
