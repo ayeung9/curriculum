@@ -51,6 +51,15 @@ app.post('/api/files', (req, res) => {
     res.json({name})
 })
 
+fs.mkdir('./api/files', (err) => {
+    if (err) {
+        console.log('./api/files already exists!')
+    }
+    else {
+        console.log('Successfully created ./api/files')
+    }
+})
+
 fs.readdir('./api/files', (err, data) => {
     if (err) {
         console.log("Error reading file. Please check fs.readdir as it is likely the /api/files does not exist and must be created.")
