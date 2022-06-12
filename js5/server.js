@@ -18,11 +18,11 @@ app.use('/*', (req, res, next) => {
     .then(r=>r.json())
     .then(data => {
         req.user = data
-        /*if (!data || !data.username) {
+        if (!data || !data.username) {
             return res.status(403).json({
                 message: 'User is not authorized.'
             })
-        }*/
+        }
         next()
     })
 })
@@ -34,11 +34,11 @@ app.get('/:roomname?', (req, res) => {
 app.get('/api/session', (req, res) => {
     const user = req.user.body
     console.log(user)
-    /*if (user.error) {
+    if (user.error) {
         return res.status(403).json({
             message: 'Not Authorized.'
         })
-    }*/
+    }
     res.json({user})
 })
 
