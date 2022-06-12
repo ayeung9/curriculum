@@ -12,6 +12,20 @@
     let globalUsername
     let jwtToken = localStorage.getItem('userjwt')
 
+    const renderSelection = () => {
+        appContainer.innerHTML = `
+            <h1>Enter Room Name</h1>
+            <input class="roomname" type="text">
+            <button class="submit">Submit</button>`
+        
+        const roomname = document.querySelector('.roomname')
+        const submit = document.querySelector('.submit')
+
+        submit.addEventListener('click', () => {
+            const room = roomname.value
+            window.location = `/chatroom/${room}`
+        })
+    }
 
     const renderRoom = (roomname) => {
         appContainer.innerHTML = `
