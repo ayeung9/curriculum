@@ -1,0 +1,96 @@
+<html>
+<head>
+  <style>
+    .container {
+      background: url('https://c0d3.com/challenges/assets/watch.jpg');
+	  width: 655px;
+      height: 800px;
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      margin: auto;
+      text-align: center;
+    }
+
+    .clock { 
+      height: 400px;
+      width: 400px;
+      position: relative;
+      border-radius: 50%;
+      margin: 200px auto auto 120px;
+      overflow: hidden;
+    }
+	
+    .clockContent {
+      background-color: white;
+      position: absolute;
+      top: 50%;
+      height: 100%;
+      width: 100%;
+	    text-align: center;
+      cursor: pointer;
+      transition: top 0.5s linear;
+    }
+
+    .clockContent.full {
+      top: 0;
+    }
+
+    iframe {
+      margin-top: -120px;
+      margin-left: -120px;
+    }
+	
+	.time {
+      font-size: 5em;
+      margin-top: 30px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="clock">
+      <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2603.833315377335!2d-123.24818248391824!3d49.26060517932887!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x548672cc2fd41e03%3A0xc79dd4e7732aa2f3!2sThe%20University%20of%20British%20Columbia!5e0!3m2!1sen!2sca!4v1650239003339!5m2!1sen!2sca" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+      <div class="clockContent">
+        <h1 class="time">time</h1>
+        <hr>
+        <h2 class="day">day</h2>
+        <h2 class="date">date</h2>
+      </div>
+    </div>
+  </div>
+  </body>
+  
+  <script>
+    const dateObj = new Date();
+    const weekday = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+    const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+    const contentsOfClock = document.querySelector('.clockContent');
+
+    function render () {
+      const date = dateObj.getDate();
+      const year = dateObj.getFullYear();
+      const month = dateObj.getMonth();
+      const day = dateObj.getDay();
+      const hour = dateObj.getHours();
+      const minutes = dateObj.getMinutes();
+
+      let variableminutes = (minutes < 10) ? `0${minutes}` : minutes;
+
+      const today = `${months[month]} ${date}, ${year}`;
+      const time = `${hour}:${variableminutes}`;
+
+      document.querySelector('.time').innerText = time;
+      document.querySelector('.date').innerText = today;
+      document.querySelector('.day').innerText = weekday[day];
+    };
+ 
+    function toggle () {
+      contentsOfClock.classList.toggle('full')
+    }
+	
+	render();
+  contentsOfClock.addEventListener('click', toggle)
+  </script>
+ </html>
+ 

@@ -6,8 +6,9 @@
     "test": "node ./node_modules/jest/bin/jest.js -o --watch"
   },
   "dependencies": {
+    "c0d3": "^2.2.8",
     "express": "^4.17.1",
-    "jest": "^26.0.1",
+    "jest": "^26.6.3",
     "webpack": "^4.43.0"
   },
   "devDependencies": {
