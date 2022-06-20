@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<<<<<<< HEAD
+    <title>Asset Editor</title>
+</head>
+
+<body>
+<style>
+   .leftSide {
+        position: absolute;
+        top: 50px;
+        left: 0;
+        bottom: 0;
+        width: 300px;
+        box-sizing: border-box;
+    }
+    .filecontainer {
+        display: flex;
+        justify-content: space-between;
+        padding: 0 10px;
+        margin-bottom: 5px;
+        background-color: white;
+    }
+    #editor { 
+        position: absolute;
+        top: 50px;
+        right: 0;
+        bottom: 0;
+        left: 300px;
+    }
+    .fileNameInput {
+        height: 40px;
+        width: 100%;
+    }
+    .fileSubmit {
+        width: 200px;
+    }
+    .container {
+        display: flex;
+    }
+</style>
+
+<div class="container">
+    <input class="fileNameInput" type="text" placeholder="File Name">
+    <button class="fileSubmit">Submit</button>
+    </div>
+    
+    <div id="editor"></div>
+    <div class="leftSide">
+      <div class="filelist"></div>
+    </div>
+
+    <script src="//ajaxorg.github.io/ace-builds/src-min-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script src="//ajaxorg.github.io/ace-builds/src-min-noconflict/ext-modelist.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+    const editor = ace.edit("editor")
+    editor.setTheme("ace/theme/monokai")
+    
+    const input = document.querySelector('.fileNameInput')
+    const createButton = document.querySelector('.fileSubmit')
+    const filelist = document.querySelector('.filelist')
+    
+    const refresh = () => {
+        filelist.innerHTML = ''
+        fetch('/api/files')
+            .then(r=>r.json())
+            .then(data => {
+            if (!data || !data.length){
+                return
+            }
+            console.log("Checking data: ",data)
+            data.forEach(fileName => {
+                const newRowForFile = document.createElement('div')
+                newRowForFile.innerHTML = `<a href="/api/files?name=${fileName}">${fileName}</a>`
+                newRowForFile.onclick = () => {
+                    input.value = fileName
+                    fetch(`/api/files/${fileName}`).then(r=>r.json())
+                        .then(data => {
+                            editor.setValue(data.content)
+                        })
+                }
+                filelist.appendChild(newRowForFile)
+=======
+    <title>Chatroom Using JWTAuth</title>
+</head>
+
+<body>
+<script src="https://js5.c0d3.com/auth.js"></script>
+<main class = "appContainer"></main>
+<script>
+    const appContainer = document.querySelector('.appContainer')
+    let globalUsername
+    let jwtToken = localStorage.getItem('userjwt')
+
+    const renderSelection = () => {
+        appContainer.innerHTML = `
+            <h1>Enter Room Name</h1>
+            <input class="roomname" type="text">
+            <button class="submit">Submit</button>`
+        
+        const roomname = document.querySelector('.roomname')
+        const submit = document.querySelector('.submit')
+
+        submit.addEventListener('click', () => {
+            const room = roomname.value
+            window.location = `/chatroom/${room}`
+        })
+    }
+
+    const renderRoom = (roomname) => {
+        appContainer.innerHTML = `
+            <h1>Chatroom: ${roomname}</h1>
+            <style>
+                .name {
+                font-weight: bold;
+                display: inline-block;
+                margin-right: 5px;
+                }
+            </style>
+            <input class="message" type="text">
+            <hr />
+            <div class="container"></div>`
+        
+        const message = document.querySelector('.message')
+        const container = document.querySelector('.container')
+        message.focus()
+
+        const sendMessage = () => {
+            const value = message.value
+            fetch(`api/${roomname}/messages`, {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json',
+                    'Authorization': `Bearer ${jwtToken}`
+                },
+                body: JSON.stringify({
+                    message: value
+                })
+                .then(() => {
+                    retrieveMessages()
+                    message.value = ''
+                })
+            })
+        }
+
+        const retrieveMessages = () => {
+            fetch(`api/${roomname}/messages`, {
+                method: 'GET',
+                headers: {
+                    'Authorization': `Bearer ${jwtToken}`
+                }
+            })
+            .then(r=>r.json())
+            .then(data => {
+                container.innerHTML = data.reduce((acc, data) => {
+                    return acc + '<div><span class="name">' + data.username + '</span>' + data.text + '</div>'
+                }, '')
+            setTimeout(() => {
+                retrieveMessages()
+            }, 500)
+            })
+        }
+
+        retrieveMessages()
+        message.addEventListener('keyup', e => {
+            if (e.key === 'Enter') {
+                return sendMessage()
+            }
+        })
+    }
+
+    const render = () => {
+        const room = window.location.pathname.split('/')[2]
+        if (!room) {
+            return renderSelection()
+        }
+        return renderRoom(roomname)
+    }
+   
+    const renderSignup = () => {
+        appContainer.innerHTML = `
+        <h1>New Account!</h1>
+        <p>Already have an account? You can <a href="#" class="instead">login instead.</a></p>
+        <input class="name" type="text" placeholder="full name">
+        <input class="username" type="text" placeholder="username">
+        <input class="email" type="text" placeholder="email">
+        <input class="password" type="text" placeholder="password">
+        <button class="submit">Submit</button>`
+
+        const name = document.querySelector('.name')
+        const username = document.querySelector('.username')
+        const email = document.querySelector('.email')
+        const password = document.querySelector('.password')
+        const instead = document.querySelector('.instead')
+        const submit = document.querySelector('.submit')
+
+        instead.addEventListener('click', () => {
+            renderLogin()
+        })
+
+        submit.addEventListener('click', () => {
+            fetch('https://js5.c0d3.com/auth/api/session', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    name: name.value,
+                    username: username.value,
+                    email: email.value,
+                    password: btoa(password.value)
+                })
+            })
+            .then(r=>r.json())
+            .then(data => {
+                if (data.error) {
+                    console.log('Error:', data.error)
+                }
+                if (data.jwt && data.username) {
+                    globalUsername = data.username
+                    jwtToken = data.jwt
+                    localStorage.setItem('userjwt', jwtToken)
+                    render()
+                }
+            })
+        })
+    }
+
+    const renderLogin = () => {
+        appContainer.innerHTML = `
+        <h1>You must be logged in to access the chatroom.</h1>
+        <p>No Account? You can <a href="#" class="instead">sign up instead.</a></p>
+        <input class="username" type="text" placeholder="username">
+        <input class="password" type="text" placeholder="password">
+        <button class="submit">Submit</button>`
+
+        const username = document.querySelector('.username')
+        const password = document.querySelector('.password')
+        const instead = document.querySelector('.instead')
+        const submit = document.querySelector('.submit')
+        
+        instead.addEventListener('click', () => {
+            renderSignup()
+        })
+
+        submit.addEventListener('click', () => {
+            fetch('https://js5.c0d3.com/auth/api/session', {
+                method: 'POST',
+                headers: {
+                    'content-type': 'application/json'
+                },
+                credentials: 'include',
+                body: JSON.stringify({
+                    username: username.value,
+                    password: btoa(password.value)
+                })
+            })
+            .then(r=>r.json())
+            .then(data => {
+                if (data.error) {
+                    console.log('Error:', data.error)
+                }
+                if (data.jwt && data.username) {
+                    globalUsername = data.username
+                    jwtToken = data.jwt
+                    localStorage.setItem('userjwt', jwtToken)
+                    render()
+                }
+>>>>>>> p5
+            })
+        })
+    }
+
+<<<<<<< HEAD
+    createButton.addEventListener('click', () => {
+        if (!input.value){
+            return alert('File name can NOT be empty!!!')
+        }
+        fetch('/api/files', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({name: input.value, content: editor.getValue()})
+      }).then( () => {
+          window.location.reload()
+      })
+    })
+
+    refresh()
+
+=======
+    const runChatroom = () => {
+        fetch("api/session", {
+            headers: {
+                'Authorization': `Bearer ${jwtToken}`
+            }
+        })
+        .then(r=>r.json())
+        .then(data => {
+            if (data.username) {
+                globalUsername = data.username
+                return render()
+            }
+            return renderLogin()
+        })
+    }
+
+    runChatroom()
+>>>>>>> p5
+</script>
+</body>
+</html>

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Selfie Queen</title>
+</head>
+
+<body>
+<video class ="player" autoplay></video>
+<button class="submit">Take a Selfie</button>
+<canvas class="selfies"></canvas>
+<div class="images"></div>
+<script>
+    const videoPlayer = document.querySelector('.player')
+    const submit = document.querySelector('.submit')
+    const canvas = document.querySelector('.selfies')
+    const context = canvas.getContext('2d')
+    const images = document.querySelector('.images')
+
+    navigator.mediaDevices.getUserMedia({
+        video: true,
+        audio: false
+    })
+    .then(media => {
+        videoPlayer.srcObject = media
+    })
+
+    const render = () => {
+        images.innerHTML = ''
+        fetch('/api/images')
+        .then(r=>r.json())
+        .then(data => {
+            console.log(data)
+            data.forEach(e => {
+                const divider = document.createElement('div')
+                divider.innerHTML = `
+                    <a href="/images/${e}"><img style="width: 160px; height: 120px" src="/images/${e}"></a>`
+                images.append(divider)
+            })
+        })
+    }
+
+    submit.addEventListener('click', () => {
+        context.drawImage(videoPlayer, 0, 0)
+        const data = canvas.toDataURL().replace(/^data:image\/png;base64,/, '')
+        fetch('/api/images', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                imageData: data
+            })
+        })
+        .then(r=>r.json())
+        .then(render())
+    })
+</script>
+</body>
+</html>

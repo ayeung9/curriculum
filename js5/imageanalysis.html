@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Image Text Extraction</title>
+</head>
+
+<body>
+    <hr>
+    <div class = "container"><h1>Upload Images For Text Extraction Here</h1></div>
+    <form action="/files" method="post" enctype="multipart/form-data">
+        <input type="file" name="image" multiple/>
+        <button class="submit">Submit</button>
+    </form>
+<script>
+    const container = document.querySelector('.container')
+    const button = document.querySelector('.submit')
+    button.addEventListener('click', () => {
+        container.innerHTML = "Please be patient as image processing is in progress."
+    })
+</script>
+</body>
+</html>
