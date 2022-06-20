@@ -2,25 +2,26 @@ import express from 'express'
 import { dirname } from 'path'
 import { fileURLToPath } from 'url'
 import jimp from 'jimp'
-import pkg from 'jimp'
 
 const app = express()
 const port = process.env.PORT || 3000
 const __dirname = fileURLToPath(dirname(import.meta.url))
-const getBufferAsync = pkg
 const files = {}
 
 app.use(express.static('public'))
 app.use(express.json({limit: '10mb'}))
 
-app.get('/', (req, res) => {
+app.get('/login', (req, res) => {
     res.sendFile(`${__dirname}/memelogin.html`)
 })
 
-app.post('/', (req, res) => {
+app.post('/api/login', (req, res) => {
     const { username } = req.body
+    if (!username || !(/^[a-z0-9]+$/i).test(username)) {
+        return req.status(400).json({error: 'Username can not be empty or non-alphanumeric.'})
+    }
     res.set('set-cookie', `username=${username}`)
-    res.status(202).redirect(`/memechat`)
+    res.status(301).redirect(`/memechat`)
 })
 
 app.get('/memechat', (req, res) => {
@@ -29,6 +30,12 @@ app.get('/memechat', (req, res) => {
 
 app.post('/memechat', async (req, res) => {
     const {image, message, username} = req.body
+    if (!image) {
+        return req.status(400).json({error: 'Please check if webcam is turned on as no image was passed through.'})
+    }
+    if (!message) {
+        return req.status(400).json({error: 'Meme will not contain text if the textbox is empty'})
+    }
     const imageData = Buffer.from(image, 'base64')
     const font = jimp.FONT_SANS_32_WHITE
 
@@ -44,7 +51,7 @@ app.post('/memechat', async (req, res) => {
         })
     
     files[username] = `${username}.png`
-    return res.status(202).send(`Meme for ${username} generated.`)
+    return res.status(200).send(`Meme for ${username} generated.`)
 })
 
 app.get('/api/messages', (req, res) => {
@@ -57,7 +64,7 @@ app.get('/api/messages', (req, res) => {
             files[username] = e
         })
     })
-    res.status(202).json(files)
+    res.status(200).json(files)
 })
 
 app.get('/files/:filename', (req, res) => {

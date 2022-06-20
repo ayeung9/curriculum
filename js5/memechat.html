@@ -64,9 +64,9 @@
             }, 1000)
         }
 
-        images.forEach (image => image.addEventListener('load', () => {
+        images.forEach(image => image.addEventListener('load', () => {
             count = count + 1
-            if (count != images.length) {
+            if (count !== images.length) {
                 return
             }
             images1.style.display = 'block'
@@ -99,7 +99,7 @@
         })
         .then(r=>r.json())
         .then(() => input.value = '')
-        .then(render())
+        render()
     })
 </script>
 </body>
