@@ -37,50 +37,45 @@
     })
 
     const render = async () => {
-        let count = 0
-        images1.innerHTML = ''
-        await fetch('/memechat/api/images', {
+        await fetch('/api/messages', {
             method: 'GET',
             headers: {
-                'content-type': 'applcation/json'
+                'content-type': 'application/json'
             }
         })
         .then(r=>r.json())
         .then(data => {
-            console.log(data)
             const dataArray = Object.keys(data)
             dataArray.forEach(e => {
-                const divider = document.createElement('div')
-                divider.innerHTML = dataArray.reduce((acc, e) => {
-                    return `${acc} <a href="${e}"><img style="width: 160px; height: 120px" src="/memechat/files/${e}.png?${Date.now}"></a>`
-                })
-                images1.append(divider)
+                images1.innerHTML = dataArray.reduce((acc, e) => {
+                    return `${acc} <a href="${e}"><src="/api/messages/routes/files/${e}.png?${Date.now}"></a>`
+                },'')
             })
-        })
+        
+            let count = 0
 
-        if(!images.length) {
-            return setTimeout(() => {
-                render()
-            }, 1000)
-        }
-
-        images.forEach(image => image.addEventListener('load', () => {
-            count = count + 1
-            if (count !== images.length) {
-                return
+            if(!images.length) {
+                return setTimeout(() => {
+                    render()
+                }, 1000)
             }
-            images1.style.display = 'block'
-            images2.style.display = 'none'
+            images.forEach(image => image.addEventListener('load', () => {
+                count = count + 1
+                if (count !== images.length) {
+                    return
+                }
+                images1.style.display = 'block'
+                images2.style.display = 'none'
 
-            const switcheroo = images2
-            images2 = images1
-            images1 = switcheroo
+                const switcheroo = images2
+                images2 = images1
+                images1 = switcheroo
 
-            setTimeout(() => {
-                render()
-            }, 1000)
-        }))
-
+                setTimeout(() => {
+                    render()
+                }, 1000)
+            }))
+        })
     }
 
     submit.addEventListener('click', () => {
@@ -88,6 +83,7 @@
         const data = canvas.toDataURL().replace('data:image/png;base64,', '')
         fetch('/memechat', {
             method: 'POST',
+            credentials:'include',
             headers: {
                 'content-type': 'application/json'
             },

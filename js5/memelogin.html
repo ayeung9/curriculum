@@ -5,11 +5,11 @@
 </head>
 
 <body>
-    <form action="/memechat" method="post" class="form">
-        <label for="Username"> Enter a username to join memechat: </label>
-        <input type="text" class="form-control" name="username"> </input>
+    <form action="/api/login" method="post" class="form">
+        <p> Enter a username to join memechat: </p>
+        <input name="username" type="text" id="username"> </input>
         <hr>
-        <input type="submit" value="Submit" class="btn"> </input>
+        <button type="submit">Submit</button>
     </form>
 </body>
 </html>
